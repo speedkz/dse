@@ -16,7 +16,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     backgroundColor: { control: "color" },
-    visual: {
+    variant: {
       options: ["solid", "outline"],
       control: { type: "radio" },
     },
@@ -36,7 +36,7 @@ type Story = StoryObj<typeof meta>;
 export const Solid: Story = {
   args: {
     children: "Button",
-    visual: "solid",
+    variant: "solid",
     size: "sm",
   },
 };
@@ -44,7 +44,7 @@ export const Solid: Story = {
 export const Outline: Story = {
   args: {
     children: "Button",
-    visual: "outline",
+    variant: "outline",
     size: "md",
   },
 };

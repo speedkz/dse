@@ -1,9 +1,15 @@
 import { createSystem, defaultConfig, defineConfig } from "@chakra-ui/react";
 import { Colors, SemanticColors } from "./color";
 import { textStyles } from "./text-style";
-import { buttonRecipe } from "./recipe/button";
-import { radioGroupRecipe } from "./recipe/radio-group";
-import { checkboxSlotRecipe } from "./recipe/checkbox";
+import { animationStyles } from "./animation";
+import {
+  buttonRecipe,
+  radioGroupRecipe,
+  checkboxSlotRecipe,
+  fieldSlotRecipe,
+  cardSlotRecipe,
+  tableSlotRecipe,
+} from "./recipe";
 
 const customConfig = defineConfig({
   theme: {
@@ -14,20 +20,28 @@ const customConfig = defineConfig({
       colors: SemanticColors,
     },
     textStyles,
+    animationStyles,
     recipes: {
       button: buttonRecipe,
       radioGroup: radioGroupRecipe,
     },
     slotRecipes: {
       checkbox: checkboxSlotRecipe,
+      field: fieldSlotRecipe,
+      card: cardSlotRecipe,
+      table: tableSlotRecipe,
     },
   },
   globalCss: {
     "*": {
       fontFamily: '"Roboto", serif',
+      boxSizing: "border-box",
     },
     html: {
       colorPalette: "primary",
+    },
+    body: {
+      margin: 0,
     },
   },
 });

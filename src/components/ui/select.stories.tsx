@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 
-import { Field } from ".";
-import { Input } from "@chakra-ui/react";
+import { Select } from ".";
+import { createListCollection } from "@chakra-ui/react";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Component/Field",
-  component: Field,
+  title: "Component/Select",
+  component: Select,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -17,55 +17,45 @@ const meta = {
     backgroundColor: { control: "color" },
   }, // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
-} satisfies Meta<typeof Field>;
+} satisfies Meta<typeof Select>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const collection = createListCollection({
+  items: [
+    { label: "React.js", value: "react" },
+    { label: "Vue.js", value: "vue" },
+    { label: "Angular", value: "angular" },
+    { label: "Svelte", value: "svelte" },
+  ],
+});
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const WithLabel: Story = {
+export const Default: Story = {
   args: {
-    children: <Input placeholder="Placeholder text" />,
-    label: "Label",
-  },
-};
-
-export const FloatLabel: Story = {
-  args: {
-    children: <Input className="peer" placeholder="" />,
-    label: "Label",
-    labelFloating: true,
-  },
-};
-
-export const WithoutLabel: Story = {
-  args: {
-    children: <Input placeholder="Placeholder text" />,
-    labelInner: false,
+    placeholder: "Placeholder text",
+    width: "300px",
+    collection,
   },
 };
 
 export const WithHelperText: Story = {
   args: {
-    children: <Input placeholder="Placeholder text" />,
     label: "Label",
+    placeholder: "Placeholder text",
+    width: "300px",
+    collection,
     helperText: "Helper message here",
   },
 };
 
 export const WithErrorText: Story = {
   args: {
-    children: <Input placeholder="Placeholder text" />,
     label: "Label",
+    placeholder: "Placeholder text",
+    width: "300px",
+    collection,
     errorText: "Error message here",
     invalid: true,
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    children: <Input placeholder="Placeholder text" />,
-    label: "Label",
-    disabled: true,
   },
 };

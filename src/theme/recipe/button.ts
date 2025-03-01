@@ -8,7 +8,7 @@ export const buttonRecipe = defineRecipe({
     },
   },
   variants: {
-    visual: {
+    variant: {
       solid: { bg: "primary.400", color: "white" },
       outline: {
         borderWidth: "1px",
@@ -23,8 +23,5 @@ export const buttonRecipe = defineRecipe({
       lg: { padding: "15px", fontSize: "18px" },
     },
   },
-  defaultVariants: {
-    visual: "solid",
-    size: "md",
-  },
+  defaultVariants: {},
 });
