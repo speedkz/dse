@@ -15,3 +15,4 @@ export * from "./slider";
 export * from "./tooltip";
 export * from "./select";
 export * from "./table";
+export * from "./pagination"

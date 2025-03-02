@@ -1,11 +1,11 @@
 import { Table } from "@/components/ui";
-import { Stack, Box, Text, Card, Menu, Avatar } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import {
-  createColumnHelper,
-  getCoreRowModel,
-  getSortedRowModel,
-  RowSelectionState,
-  useReactTable,
+    createColumnHelper,
+    getCoreRowModel,
+    getSortedRowModel,
+    RowSelectionState,
+    useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
 type Person = {
@@ -71,6 +71,7 @@ export const ContainerContainer = () => {
     }),
   ];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, _setData] = useState(() => [...defaultData]);
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
 
