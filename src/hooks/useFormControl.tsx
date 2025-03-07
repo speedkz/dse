@@ -1,15 +1,28 @@
-import { Field, InputGroup, InputGroupProps } from "@/components/ui";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  Field,
+  FieldProps,
+  InputGroup,
+  InputGroupProps,
+} from "@/components/ui";
 import { IconButton, Input, InputProps } from "@chakra-ui/react";
 import { useState } from "react";
 import { Controller, ControllerProps, UseFormReturn } from "react-hook-form";
+
+type DataAttributeKey = `data-${string}`;
+
+interface HTMLAttributes extends React.HTMLAttributes<any> {
+  [dataAttribute: DataAttributeKey]: any;
+}
 
 export interface UseFormControlProps<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useFormReturn: UseFormReturn<T & any>;
 }
-export interface ElementControlProps extends Pick<ControllerProps, "name"> {
-  inputProps?: InputProps;
-  inputGroupProps?: Omit<InputGroupProps, "children">;
+export interface ElementControlProps extends Omit<ControllerProps, "render"> {
+  inputProps?: InputProps & HTMLAttributes;
+  inputGroupProps?: Omit<InputGroupProps, "children"> & HTMLAttributes;
+  fieldProps?: FieldProps;
 }
 export const useFormControl = <T,>(props: UseFormControlProps<T>) => {
   const { useFormReturn } = props;
@@ -17,13 +30,13 @@ export const useFormControl = <T,>(props: UseFormControlProps<T>) => {
 
   const InputPasswordControl = (props: ElementControlProps) => {
     const [inputType, setInputType] = useState<"password" | "text">("password");
-    const { inputProps, inputGroupProps, ...rest } = props;
+    const { inputProps, inputGroupProps, fieldProps, ...rest } = props;
     return (
       <Controller
         {...rest}
         control={control}
-        render={({ field }) => (
-          <Field labelInner={false}>
+        render={({ field, fieldState: { error } }) => (
+          <Field {...fieldProps} errorText={error?.message}>
             <InputGroup
               {...inputGroupProps}
               endElement={
@@ -46,13 +59,13 @@ export const useFormControl = <T,>(props: UseFormControlProps<T>) => {
   };
 
   const InputControl = (props: ElementControlProps) => {
-    const { inputProps, ...rest } = props;
+    const { inputProps, fieldProps, ...rest } = props;
     return (
       <Controller
         {...rest}
         control={control}
-        render={({ field }) => (
-          <Field labelInner={false}>
+        render={({ field, fieldState: { error } }) => (
+          <Field {...fieldProps} errorText={error?.message}>
             <Input {...field} {...inputProps} />
           </Field>
         )}
@@ -61,21 +74,24 @@ export const useFormControl = <T,>(props: UseFormControlProps<T>) => {
   };
 
   const InputGroupControl = (props: ElementControlProps) => {
-    const { inputProps, inputGroupProps, ...rest } = props;
+    const { inputProps, fieldProps, inputGroupProps, ...rest } = props;
     return (
       <Controller
         control={control}
         {...rest}
-        render={({ field }) => (
-          <Field labelInner={false}>
-            <InputGroup {...inputGroupProps}>
-              <Input {...field} {...inputProps} />
-            </InputGroup>
-          </Field>
-        )}
+        render={({ field, fieldState: { invalid, error } }) => {
+          return (
+            <Field {...fieldProps} invalid={invalid} errorText={error?.message}>
+              <InputGroup {...inputGroupProps}>
+                <Input {...field} {...inputProps} />
+              </InputGroup>
+            </Field>
+          );
+        }}
       />
     );
   };
+
   return {
     InputControl,
     InputGroupControl,

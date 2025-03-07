@@ -10,6 +10,7 @@ import {
   createContext,
   usePaginationContext,
 } from "@chakra-ui/react";
+import { PaginationState, Updater } from "@tanstack/react-table";
 import * as React from "react";
 import {
   HiChevronLeft,
@@ -211,11 +212,22 @@ export const PaginationPageText = React.forwardRef<
   );
 });
 
-export interface PaginationProps extends PaginationRootProps {}
+export interface PaginationProps extends PaginationRootProps {
+  setPagination: (updater: Updater<PaginationState>) => void;
+}
 export const Pagination = (props: PaginationProps) => {
+  const { setPagination, ...rest } = props;
   return (
-    <PaginationRoot {...props}>
-      <HStack>
+    <PaginationRoot
+      {...rest}
+      onPageChange={(e) =>
+        setPagination({
+          pageIndex: e.page - 1,
+          pageSize: e.pageSize,
+        })
+      }
+    >
+      <HStack justifyContent={"flex-end"}>
         <PaginationPrevTrigger />
         <PaginationItems />
         <PaginationPageText />

@@ -4,11 +4,10 @@ export const fieldSlotRecipe = defineSlotRecipe({
   slots: ["root", "control", "label"],
   base: {
     root: {
-      "& .inner-label": {
+      "& .container": {
         display: "flex",
         flexDir: "column",
-        flexGrow: 1,
-        py: "11px",
+        w: "100%",
         borderColor: "neutral.100",
         borderWidth: "1px",
         borderRadius: "10px",
@@ -26,30 +25,29 @@ export const fieldSlotRecipe = defineSlotRecipe({
             color: "neutral.200",
           },
         },
-        "& .chakra-group": {
-          height: "100%",
-          alignItems: "flex-end !important",
-          "&:has( div[data-group-item][data-first])": {
-            "& ~label": {
-              left: "34px",
-            },
+        "&[data-invalid]": {
+          "& .container": {
+            borderColor: "red.500",
+            focusRingColor: "red.500",
           },
         },
-        "& input": {
-          border: "none",
-          height: "14px",
-        },
       },
-      "&[data-invalid]": {
-        "& .container": {
-          borderColor: "red.500",
-          focusRingColor: "red.500",
+      "& .chakra-group": {
+        w: "100%",
+        height: "100%",
+        alignItems: "flex-end !important",
+        "&:has( div[data-group-item][data-first])": {
+          "& ~label": {
+            left: "34px",
+          },
         },
       },
       "& input": {
-        fontSize: 16,
-        lineHeight: 4,
+        borderRadius: "10px",
+        bg: "transparent",
+        border: "none",
         color: "neutral.600",
+        transition: "all",
         "&:focus": {
           outline: "none",
         },
@@ -66,12 +64,10 @@ export const fieldSlotRecipe = defineSlotRecipe({
       "& span[data-part='helper-text']": {
         color: "primary.500",
       },
-      "& .chakra-group": {
-        w: "100%",
-      },
     },
     label: {
       position: "absolute",
+      opacity: 1,
       top: "11px",
       left: 3,
       width: "fit-content",
@@ -83,33 +79,44 @@ export const fieldSlotRecipe = defineSlotRecipe({
       _disabled: {
         opacity: 1,
       },
-      "&.float": {
-        pos: "absolute",
-        px: "0.5",
-        top: "-3",
-        insetStart: "2",
-        fontWeight: "normal",
-        pointerEvents: "none",
-        transition: "position",
-        _peerPlaceholderShown: {
-          color: "fg.muted",
-          top: "6",
-          insetStart: "3",
-        },
-        _peerFocusVisible: {
-          color: "fg",
-          top: "-2",
-          insetStart: "2",
-        },
-      },
+      pos: "absolute",
+      px: "0.5",
+      insetStart: "3",
+      pointerEvents: "none",
+      transition: "position",
     },
   },
   variants: {
     size: {
       lg: {
         root: {
-          "& > div": {
+          "& .container": {
             height: "60px",
+            "& input": {
+              height: "100%",
+              py: "11px",
+              fontSize: 16,
+              lineHeight: 4,
+            },
+            "&:has(label)": {
+              "& input": {
+                height: "44px",
+                "&:placeholder-shown": {
+                  height: "100%",
+                  "& ~label": {
+                    opacity: 0,
+                    top: "22px",
+                  },
+                },
+                _focusVisible: {
+                  height: "44px",
+                  "& ~label": {
+                    opacity: 1,
+                    top: "11px",
+                  },
+                },
+              },
+            },
           },
         },
       },

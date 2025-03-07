@@ -1,10 +1,10 @@
 import { Provider } from "@/components/ui/provider";
-import { Button } from "./components/ui/button";
+import { LoginContainer } from "./pages/login";
 
 function App() {
   return (
     <Provider>
-      <Button>test</Button>
+      <LoginContainer />
     </Provider>
   );
 }

@@ -1,5 +1,8 @@
 import type { Preview } from "@storybook/react";
 import ChakraProviderDecor from "./decorators";
+import { initialize, mswLoader } from "msw-storybook-addon";
+
+initialize();
 
 const preview: Preview = {
   parameters: {
@@ -11,6 +14,7 @@ const preview: Preview = {
     },
   },
   decorators: [ChakraProviderDecor],
+  loaders: [mswLoader],
 };
 
 export default preview;

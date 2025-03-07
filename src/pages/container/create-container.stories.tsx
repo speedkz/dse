@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, spyOn, userEvent, within } from "@storybook/test";
 
-import { LoginContainer } from "..";
+import { CreateContainer } from ".";
 
 import playWright from "@/helpers/play-wright";
 import { faker } from "@faker-js/faker";
-import { http, HttpResponse, delay } from "msw";
+import { delay, http, HttpResponse } from "msw";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Pages/LoginContainer",
-  component: LoginContainer,
+  title: "Pages/CreateContainer",
+  component: CreateContainer,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -20,7 +20,7 @@ const meta = {
     backgroundColor: { control: "color" },
   }, // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
-} satisfies Meta<typeof LoginContainer>;
+} satisfies Meta<typeof CreateContainer>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -59,17 +59,22 @@ export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const emailInput = canvas.getByTestId("email");
-    const pwdInput = canvas.getByTestId("pwd");
+    const nameInput = canvas.getByTestId("name");
+    const typeInput = canvas.getByTestId("type");
+    const weightInput = canvas.getByTestId("weight");
+    const capacityInput = canvas.getByTestId("capacity");
     const submitButton = canvas.getByTestId("submit");
 
     expect(submitButton).toBeDisabled();
 
-    const { email, password } = faker.internet;
+    const { vehicle, type } = faker.vehicle;
+    const { numeric } = faker.string;
 
     const userTypes = [
-      { target: emailInput, value: email() },
-      { target: pwdInput, value: password() },
+      { target: nameInput, value: vehicle() },
+      { target: typeInput, value: type() },
+      { target: weightInput, value: numeric() },
+      { target: capacityInput, value: numeric() },
     ];
     const spy = spyOn(fns, "onSubmit");
     submitButton.addEventListener("click", fns.onSubmit);
@@ -86,7 +91,7 @@ export const MockedSuccess: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post("https://api.example.com/auth/login", () => {
+        http.post("https://api.example.com/container", () => {
           return HttpResponse.json(TestData);
         }),
       ],
@@ -102,7 +107,7 @@ export const MockedError: Story = {
   parameters: {
     msw: {
       handlers: [
-        http.post("https://api.example.com/auth/login", async () => {
+        http.post("https://api.example.com/container", async () => {
           await delay(800);
           return new HttpResponse(null, {
             status: 403,
