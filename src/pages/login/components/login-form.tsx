@@ -1,8 +1,10 @@
 import Logo from "@/assets/logos/LogoText.svg?react";
+import { toaster } from "@/components/ui/toaster";
 import validator from "@/helpers/validation";
 import { useFormControl } from "@/hooks";
 import { authService } from "@/services";
 import { Button, Card, Stack } from "@chakra-ui/react";
+import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { LuEye, LuLock, LuUser } from "react-icons/lu";
 
@@ -28,9 +30,22 @@ export const LoginForm = () => {
     useFormReturn,
   });
 
-  const onSubmit = (values: FormProps) => {
-    const { email, pwd } = values;
-    authService.login(email, pwd);
+  const onSubmit = async (values: FormProps) => {
+    try {
+      const { email, pwd } = values;
+      await authService.login(email, pwd);
+      toaster.create({
+        title: "Toast Title",
+        type: "success",
+      });
+    } catch (err) {
+      const { message, code } = err as AxiosError;
+      toaster.create({
+        title: code,
+        description: message,
+        type: "error",
+      });
+    }
   };
 
   return (

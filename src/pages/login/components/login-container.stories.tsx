@@ -65,11 +65,11 @@ export const Default: Story = {
 
     expect(submitButton).toBeDisabled();
 
-    const { email, password } = faker.internet;
+    const { email } = faker.internet;
 
     const userTypes = [
       { target: emailInput, value: email() },
-      { target: pwdInput, value: password() },
+      { target: pwdInput, value: "12345678" },
     ];
     const spy = spyOn(fns, "onSubmit");
     submitButton.addEventListener("click", fns.onSubmit);
